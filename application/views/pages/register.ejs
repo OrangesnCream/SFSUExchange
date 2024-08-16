@@ -1,0 +1,152 @@
+<!--
+File: register.ejs
+
+Description:
+This file contains the registration form for users to sign up on the SFSU Exchange platform.
+It includes fields for email, password, password confirmation, and terms acceptance.
+Users must agree to the terms of service before submitting the form.
+Upon submission, the registration data is sent to "/register/create" endpoint via POST method for processing.
+A link to the login page is provided for users who already have an account.
+
+Dependencies:
+- Includes '../partials/head' for metadata and styles.
+- Includes '../partials/header' for the site's navigation bar.
+- Utilizes Bootstrap icons for the envelope and lock icons in input fields.
+
+
+JavaScript Functionality:
+- Includes commented-out JavaScript for form validation using Bootstrap's form validation classes. This script is intended to validate form inputs and display feedback to users when fields are incomplete or incorrectly filled out.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Include partial head content (SFSUExchange logo) -->
+    <%- include('../partials/head'); %>
+        <style>
+            /* Styles for tab content visibility */
+            .tab-content {
+                display: none;
+            }
+
+            .tab-content.selected {
+                display: block;
+            }
+        </style>
+</head>
+
+<body>
+    <!-- Include partial header content (navigation bar) -->
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <!-- Main section for the registration page -->
+    <section>
+        <!-- Placeholder for the navbar -->
+        <div id="navbar-placeholder"></div>
+        <!-- Title for the registration page -->
+        <div class="d-flex justify-content-center align-items-center">
+            <h1 class="display-5 mt-5 mb-3 text-center" style="color: rgba(102, 16, 242, 1)">
+                Register for SFSU Exchange
+            </h1>
+        </div>
+    </section>
+
+    <!-- Register form section :name, email, password included -->
+    <section id="contact">
+        <div class="container-lg">
+            <!-- Form with validation classes -->
+            <form action="/register/create" method="POST" enctype="multipart/form-data" class="row needs-validation">
+                <div class="row justify-content-center my-5">
+                    <div class="col-lg-6">
+                        <h6 class="text-end"><small>All fields are required.</small></h6>
+
+                        <!-- Email field-->
+                        <label for="emailAddress" class="form-label">Email address: </label>
+                        <div class="mb-4 input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-envelope-fill"></i>
+                            </span>
+                            <input type="email" name="Email" class="form-control" id="emailAddress" pattern=".*@sfsu\.edu"
+                                placeholder="e.g. mario@sfsu.edu" required>
+                            <div class="invalid-feedback">
+                                Incorrect email address (The email address must end with sfsu.edu).
+                            </div>
+                        </div>
+
+                        <!-- Password field -->
+                        <label for="password" class="form-label">Password: </label>
+                        <div class="input-group mb-4">
+                            <span class="input-group-text">
+                                <i class="bi bi-lock-fill"></i>
+                            </span>
+                            <input name="password" type="password" class="form-control" id="password"
+                                placeholder="Enter your password" aria-describedby="inputGroupPrepend" required>
+                            <div class="invalid-feedback"> Enter a password.</div>
+                        </div>
+                        <!-- Re-enter Password field -->
+                        <label for="password" class="form-label">Re-enter Password: </label>
+                        <div class="input-group mb-4">
+                            <span class="input-group-text">
+                                <i class="bi bi-lock-fill"></i>
+                            </span>
+                            <input name="passwordCheck" type="password" class="form-control" id="password"
+                                placeholder="Enter your password" aria-describedby="inputGroupPrepend" required>
+                            <div class="invalid-feedback"> Re-enter your password.</div>
+                        </div>
+
+                        <!-- Terms and conditions checkbox -->
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                                <label class="form-check-label" for="invalidCheck">
+                                    I agree with all the statements in the <a href="register.html"
+                                        class="link-underline-primary">Terms of service</a>
+                                </label>
+                                <div class="invalid-feedback">
+                                    You must agree before submitting.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit button and additional info -->
+                        <div class="mb-4 text-center">
+                            <p></p>
+                            <button type="submit" class="btn btn-secondary">Submit</button>
+                            <p></p>
+                            <small class="text-center">Register may take up to 24 hours to be approved</small>
+                            <p class="text-center">Already have an account? <a href="login.html"
+                                    class="link-underline-primary">Log in here</p>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- JavaScript to check if it's empty or validate -->
+  <!--  <script>
+        var forms = document.querySelectorAll('.needs-validation');
+
+        // Loop over them and prevent submission if they are invalid
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation();
+                }
+
+                form.classList.add('was-validated');
+            }, false);
+        });
+
+    </script>
+-->
+
+
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+<!--
+  search.ejs
+
+  This file displays search results for listings. It includes a header, search result count,
+  and details of each listing such as name, category, description, and date created. Users can
+  interact with each listing by sending messages and viewing more details.
+
+  Components:
+  - Header and search results display.
+  - Conditional rendering based on search result size.
+  - Modal for sending messages to sellers.
+  - Buttons for messaging and viewing more details for each listing.
+-->
+<!DOCTYPE html>
+<html lang="en">
+  
+<!-- Include partial head content (SFSUExchange logo) -->
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <!-- Include partial header content (navigation bar) -->
+  <header>
+    <%- include('../partials/header'); %>
+  </header>
+      
+  <!-- Title for search results -->
+  <div class="d-flex justify-content-center align-items-center">
+    <h1 class="display-5 m-5 text-center" style="color: rgba(102, 16, 242, 1)">
+      Search Results
+    </h1>
+  </div>
+
+  <!-- Display total number of search results -->
+  <div id="numEntries" class="lead ps-2">
+    <!-- If search results found  -->
+    <% if (searchResultSize > 0) { %>
+      Total entries: <%= searchResultSize %>
+    <% } else { %>
+      <!-- If no search results found -->
+      No Search Results Found.
+      <!-- showing recent listing if there is no search results found -->
+      <%- include('../partials/recentListing'); %>
+    <% } %>
+  </div>
+
+  <!-- Display search results -->
+  <div id="searchResults" class="container">
+    <!-- Loop through each search result -->
+    <% searchResult.forEach(function(listing) { %>
+      <div class="row listing lead border-bottom pb-2 mt-2 text-decoration-none">
+        <div class="col-md-2">
+          <img src="<%= listing.thumbnail %>" alt="Thumbnail" class="img-fluid">
+        </div>
+        <div class="col-md-10 text-dark">
+          <p>Name: <%= listing.title %>
+          </p>
+          <p>Category: <%= listing.name %>
+          </p>
+          <p>Description: <%= listing.Description %>
+          </p>
+          <p>Date Created: <%= listing.dateCreated %>
+          </p>
+          <!-- Button to message the seller -->
+          <% if (isAuthenticated) {%>
+          <button class="btn btn-secondary" data-bs-toggle="modal"
+          data-bs-target="#<%= listing.ListID %>">Message</button>
+          <% } else { %>
+            <button  class="btn btn-secondary" 
+          ><a class="nav-link" href="#login">Message</a></button>
+          <% } %>
+          <button class="btn btn-dark" onclick="window.open('/listing/'+'<%= listing.ListID %>' ,'_productdetails')">More Details</button>
+        </div>
+      </div>
+
+      <!-- modal for message button -->
+      <% if (isAuthenticated) {%>
+      <div class="modal fade" id="<%= listing.ListID %>" tabindex="-1"
+      aria-labelledby="modal-title" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-title">Send a Message</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+          </div>
+    
+          <form action="/message/create/<%= listing.ListID %>" method="POST" enctype="multipart/form-data" class="modal-body">
+            <h6 class="text-end"><small>All fields are required.</small></h6>
+            <label for="modal-email" class="form-label">Your email address:</label>
+            <input type="email" class="form-control" id="modal-email" name="messageEmail" placeholder="buyer@sfsu.edu">
+            <p></p>
+            <label for="modal-subject" class="form-label">Subject:</label>
+            <input type="text" class="form-control" id="subject" name="messageSub"placeholder="Message Subject"
+            >
+            <p></p>
+            <label for="modal-Message" class="form-label">Message:</label>
+            <div class="form-floating mb-4 mt-2">
+              <textarea id="message" class="form-control" style="height: 140px;" name="messageText"></textarea>
+              <label for="message">Tell a seller briefly about your needs...</label>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <% } else { %>
+      <%- include('../partials/loginModal'); %>
+    <% } %>
+    <% }); %>
+  </div>
+
+  <!-- messge modal itself -->
+ 
+  
+  <!-- Script to open a new window for more details button -->
+  <script>
+    //this code opens a new window on reload
+    /*window.open(
+      'productdetails.ejs',
+      '_productdetails'
+    );*/
+  </script>
+
+
+</body>
+
+</html>

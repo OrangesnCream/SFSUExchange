@@ -1,0 +1,258 @@
+<!--
+File: header.ejs
+
+Description:
+This file contains styling and functionality for the SFSU Exchange website.
+It includes a radial gradient background, a login modal with animations, and a navigation bar with links to different sections of the site.
+The navigation includes options for creating a listing, accessing the dashboard, learning about the site, and logging in.
+
+Note: This file utilizes server-side templating (e.g., <% %> tags) for dynamic content generation and includes JavaScript functions for handling URL parameters and form submissions.
+
+-->
+
+<head>
+  <!-- CSS styles for login -->
+  <style>
+    body {
+      background-image: radial-gradient(circle 200vh at 50% 220%, #add8e6, #ffffff);
+      background-attachment: fixed;
+      height: 100%;
+      margin: 0;
+    }
+
+    .login {
+      overflow: hidden;
+      position: fixed;
+      min-height: 100vh;
+      width: 100%;
+      top: 0;
+      left: 0;
+      display: flex;
+      z-index: 1000;
+    }
+
+    .modal-overlay {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.5);
+      cursor: default;
+      left: 0;
+    }
+
+    .modal-content {
+      transition: transform 1s;
+      background: #fff;
+      position: relative;
+      border-radius: 4px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .modal-close {
+      font-size: 36px;
+      text-decoration: none;
+      color: inherit;
+      position: absolute;
+      right: 48px;
+      top: 36px;
+    }
+
+    .login:not(:target) {
+      visibility: hidden;
+      transition-delay: 500ms;
+      transition-property: visibility;
+    }
+
+    .login:target .modal-content {
+      transform: translateY(100vh);
+      animation: 500ms ease-in-out slideUp forwards;
+    }
+
+    .login:not(:target) .modal-content {
+      transform: translateY(0);
+      animation: 500ms ease-in-out slideDown forwards;
+    }
+
+    .login:target .modal-overlay {
+      opacity: 0;
+      animation: 500ms linear fadeIn forwards;
+    }
+
+    .login:not(:target) .modal-overlay {
+      opacity: 1;
+      animation: 500ms linear fadeOut forwards;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(100vh);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100vh);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<!-- Header section with project information -->
+<div class="text-dark lead ps-2" style="background-color: #FFDD70;">SFSU Software Engineering Project
+  CSC
+  648-848,
+  Spring
+  2024. For
+  Demonstration Only</div>
+
+<body>
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #070d59">
+    <div class="container-fluid ps-2">
+      <a class="navbar-brand text-center" href="/index">SFSU Exchange</a>
+      <!-- Search bar and dropdown -->
+      <div class="d-flex flex-grow-1 mx-lg-5 px-lg-5 px-md-0 mx-md-0" id="search">
+        <div class="dropdown" id="dropdownContainer">
+          <button id="dropdownButton" class="btn btn-secondary dropdown-toggle text-dark"
+            style="border-radius: 0.25em 0em 0em 0.25em;  background-color:#FFDD70; border-color: transparent;"
+            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            All</button>
+          <ul class="dropdown-menu">
+            <li>
+              <div class="dropdown-item" onclick="selectCategory('All')">All</div>
+            </li>
+            <li>
+              <div class="dropdown-item" onclick="selectCategory('Electronics')">Electronics</div>
+            </li>
+            <li>
+              <div class="dropdown-item" onclick="selectCategory('Furniture')">Furniture</div>
+            </li>
+            <li>
+              <div class="dropdown-item" onclick="selectCategory('Textbooks')">Textbooks</div>
+            </li>
+          </ul>
+        </div>
+        <div class="col flex-grow-1">
+          <!-- Search form -->
+          <form id="searchForm" class="d-flex">
+            <input id="searchInput" class="form-control me-2" style="border-radius: 0em 0.25em 0.25em 0em;"
+              type="search" placeholder="Search" aria-label="Search" maxlength="40">
+            <button class="btn me-2" style="background-color: #FFDD70; border-color: transparent;" type="submit"><i
+                class="material-icons" style="font-size: 1.25rem; 
+            vertical-align: middle; 
+            line-height: 0 !important; 
+            position: relative;
+            top: -1px;
+            font-weight: bold;">search</i></button>
+          </form>
+        </div>  
+        <!-- Navbar toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+      <!-- Navbar collapse -->
+      <div class="navbar-collapse collapse flex-grow-0 justify-content-center" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/listing/createlisting">Create Listing</a>
+          </li>
+          <% if (isAuthenticated) {%>
+            <li class="nav-item">
+              <a class="nav-link" href="/dashboard">Dashboard</a>
+            </li>
+          <% } else { %>
+            
+          <% } %>
+          <li class="nav-item">
+            <a class="nav-link" href="/about">About Us</a>
+          </li>
+          <% if (isAuthenticated) {%>
+          <li class=" nav-item">
+            <form action="/logout" method="POST">
+              <button class="nav-link" type="submit" href="">Log Out</button>
+            </form>
+          </li>
+          <% } else { %>
+            <li class=" nav-item">
+              <a class="nav-link" href="#login">Log In</a>
+            </li>
+            <% } %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Login section -->
+  <%- include('../partials/loginModal'); %>
+</body>
+
+<!-- JavaScript for updating URL parameters, dropdown, and search functionality -->
+<script>
+  // Function to update URL parameters
+  function updateUrlParameter(key, value) {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set(key, value);
+    window.history.replaceState({}, '', `${window.location.pathname}?${urlParams}`);
+  }
+
+  // Set the value of the dropdown based on what you click
+  function selectCategory(category) {
+    document.getElementById("dropdownButton").innerText = category;
+    updateUrlParameter("category", category);
+  }
+
+  // Set the value of the searchInput field if it exists
+  var searchInput = document.getElementById("searchInput");
+  searchInput.value = new URLSearchParams(window.location.search).get("searchInput") || '';
+
+  // Event listener for search form submission
+  document.getElementById("searchForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    var searchInput = document.getElementById("searchInput").value;
+    updateUrlParameter("searchInput", searchInput);
+
+    // Redirect to search page with URL parameters
+    var category = document.getElementById("dropdownButton").innerText.trim();
+    window.location.href = "/search?category=" + encodeURIComponent(category) + "&searchInput=" + encodeURIComponent(searchInput);
+  });
+
+  // Get category from URL parameter and update dropdown
+  var category = new URLSearchParams(window.location.search).get("category");
+  if (category) {
+    category = category.trim();
+    document.getElementById("dropdownButton").innerText = category;
+  }
+
+</script>

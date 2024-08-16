@@ -1,0 +1,162 @@
+<!--
+  messages.ejs
+
+  This file displays a list of messages in a table format with checkboxes, email subjects, dates, and delete icons.
+  It includes functionality to select individual messages or all messages using checkboxes, and opens a modal to display
+  detailed message information when clicking on a message row.
+
+  Features:
+  - Checkbox selection for individual messages and "select all" functionality.
+  - Modal display for detailed message view with sender's email and message content.
+  - Delete icon for removing messages from the list.
+
+  Components:
+  - CSS for delete icon hover effect.
+  - HTML structure with rows for each message entry and modal for detailed view.
+  - JavaScript for checkbox interaction and modal triggering.
+-->
+
+<head>
+  <!-- CSS style for hover effect on delete icon -->
+  <style>
+    .delete-icon:hover {
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Container for the list of entries -->
+  <div class="container-fluid">
+    <!-- Header row with checkboxes, email, message subject, date sent, and delete icon -->
+    <div class="row border-top border-bottom text-center py-2">
+      <!-- Checkbox to select all entries -->
+      <div class="col-1">
+        <input type="checkbox" id="select-all">
+      </div>
+      <!-- Email column-->
+      <div class="col-4 fw-bold">
+        Email (@sfsu.edu)
+      </div>
+       <!-- Message subject column -->
+      <div class="col-3 fw-bold">
+        Message Subject
+      </div>
+      <!-- Date sent column -->
+      <div class="col-3 fw-bold">
+        Date Sent
+      </div>
+            <!-- Delete icon column -->
+      <div class="col-1">
+        <!-- Icon for deleting entries -->
+        <i class="material-icons delete-icon" style="font-size: 1.25rem; 
+          vertical-align: middle; 
+          line-height: 0 !important; 
+          position: relative;
+          top: -1px;
+          font-weight: bold;">delete</i>
+      </div>
+    </div>
+
+    <!-- Entry row for each entry -->
+    
+    <% messages.forEach(function(message) { %>
+    <div class="entry row border-bottom text-center">
+      <!-- Checkbox for individual entry -->
+      <div class="col-1 py-2">
+        <input type="checkbox" class="entry-checkbox">
+      </div>
+      <!-- Email column with modal trigger -->
+      <div class="col-4 py-2" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#<%= message.messageID %>">
+        <!-- Email of the entry -->
+        <%= message.email %>
+      </div>
+      <!-- Message subject column with modal trigger -->
+      <div class="col-3 py-2" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#<%= message.messageID %>">
+        <%= message.title %>
+      </div>
+      <!-- Date sent column with modal trigger -->
+      <div class="col-3 py-2" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#<%= message.messageID %>">
+        <!-- Date when the message was sent -->     
+        <%= message.messageDate %>
+      </div>
+    <!-- Delete icon column -->
+    <div class="col-1 py-2">
+      <!-- Icon for deleting the entry -->
+      <i class="material-icons delete-icon" style="font-size: 1.25rem; 
+        vertical-align: middle; 
+        line-height: 0 !important; 
+        position: relative;
+        top: -1px;">delete</i>
+    </div>
+      <div class="modal fade" id="<%= message.messageID %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalTitle"></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p><strong>From: <%= message.email %></strong></p>
+              <!-- Email of the entry displayed in the modal -->
+              <p id="modalEmail"></p>
+              <p><strong>Message:</strong></p>
+              <!-- Placeholder for displaying the message content in the modal -->
+              <p id="modalMessage"> <%= message.text %></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+
+    <% }); %>
+  </div>
+
+  
+
+  <!-- JavaScript for checkbox functionality and modal trigger -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Selecting elements
+      const selectAllCheckbox = document.getElementById('select-all');
+      const entryCheckboxes = document.querySelectorAll('.entry-checkbox');
+      const deleteIcons = document.querySelectorAll('.delete-icon');
+
+      //Event listener for select all checkbox
+      selectAllCheckbox.addEventListener('change', function () {
+        const isChecked = this.checked;
+        entryCheckboxes.forEach(function (checkbox) {
+          checkbox.checked = isChecked;
+        });
+      });
+
+      // Event listener for individual entry checkboxes
+      entryCheckboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+          event.stopPropagation();
+          const allChecked = document.querySelectorAll('.entry-checkbox:checked').length === entryCheckboxes.length;
+          selectAllCheckbox.checked = allChecked;
+        });
+      });
+
+      // Event listener for clicking on an entry row to display modal
+      const entryRows = document.querySelectorAll('.entry');
+      entryRows.forEach(function (row) {
+        row.addEventListener('click', function () {
+          // Get email and subject from the clicked row
+          const email = row.querySelector('.col-md-4').innerText.trim();
+          const subject = row.querySelector('.col-md-3').innerText.trim();
+          // Set modal title and email content
+          document.getElementById('modalTitle').innerText = subject;
+          document.getElementById('modalEmail').innerText = email;
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

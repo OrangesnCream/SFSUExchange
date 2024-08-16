@@ -1,0 +1,65 @@
+    <!--
+        File: aboutUs.ejs
+        Description: This is the About Us page template for our website.
+                     It displays information about team members with their roles.
+    -->
+<!doctype html>
+<html lang="en">
+
+<head>
+    <%- include('../../partials/head'); %>
+</head>
+
+<body>
+    <header>
+        <%- include('../../partials/header.ejs'); %>
+    </header>
+
+    <section>
+        <div class="d-flex justify-content-center align-items-center">
+            <h1 class="display-5 m-5 text-center" style="color:rgba(102, 16, 242, 1);">
+                About Us
+            </h1>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <a href="/about/aboutBryanY" class="text-decoration-none">
+                    <div class="col text-center">
+                        <img src="/assets/pfp.png" class="mb-3" />
+                        <h1 class="lead" style="color: rgba(102, 16, 242, 1)">Bryan Yao</h1>
+                        <p class="lead text-secondary">Team Lead</p>
+                </a>
+            </div>
+            <div class="col text-center">
+                <a href="/about/aboutLuisA" class="text-decoration-none">
+                    <img src="/assets/pfp.png" class="mb-3" />
+                    <h1 class="lead" style="color: rgba(102, 16, 242, 1)">Luis M. Alvarado Rivas</h1>
+                    <p class="lead text-secondary">Back-end Lead</p>
+                </a>
+            </div>
+            <div class="col text-center">
+                <a href="/about/aboutGurvirD" class="text-decoration-none">
+                    <img src="/assets/pfp.png" class="mb-3" />
+                    <h1 class="lead" style="color: rgba(102, 16, 242, 1)">Gurvir Dhillon</h1>
+                    <p class="lead text-secondary">Front-end Lead</p>
+                </a>
+            </div>
+            <div class="col text-center">
+                <a href="/about/aboutChloeK" class="text-decoration-none">
+                    <img src="/assets/pfp.png" class="mb-3" />
+                    <h1 class="lead" style="color: rgba(102, 16, 242, 1)">Chloe Kim</h1>
+                    <p class="lead text-secondary">Front-end Dev</p>
+                </a>
+            </div>
+            <div class="col text-center">
+                <a href="/about/aboutViannaC" class="text-decoration-none">
+                    <img src="/assets/pfp.png" class="mb-3" />
+                    <h1 class="lead" style="color: rgba(102, 16, 242, 1)">Vianna Cramer</h1>
+                    <p class="lead text-secondary">QA Lead</p>
+                </a>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

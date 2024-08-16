@@ -1,0 +1,113 @@
+<!--
+File: productdetails.ejs
+
+Description:
+This file displays detailed information about a specific product listing on the SFSU Exchange website.
+It includes the product's title, image, price or barter offers, description, and a button to contact the seller via a modal window.
+Users can input their email, subject, and message to initiate contact with the seller.
+
+Dependencies:
+- Includes '../partials/head' for metadata and styles.
+- Includes '../partials/header' for the site's navigation bar.
+
+JavaScript Functionality:
+- Utilizes Bootstrap modal functionality to display a form for sending messages to the seller upon clicking the "Contact Seller" button.
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Include partial head content (SFSUExchange logo) -->
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <!-- Include partial header content (navigation bar) -->
+  <header>
+    <%- include('../partials/header'); %>
+  </header>
+
+  <!-- Main content section for the product details -->
+  <div id="page-contents">
+    <div class="m-3">
+      <div class="row">
+        <div class="col-md-6">
+          <img src="/<%= listing.image %>" alt="image" class="img-fluid">
+        </div>
+        <!-- Right column: Product details -->
+        <div class="col-md-6 align-items-start lead d-flex flex-column">
+          <!-- Poduct Name -->
+          <div class="row pb-3 border-bottom w-100">
+            <h1 style="color:rgba(102, 16, 242, 1);"><%= listing.title %></h1>
+          </div>
+          <!-- Product Price and bartered items -->
+          <div class="row pt-3 pb-3 border-bottom w-100">
+            <p class="fw-semibold">Price:</p>
+            <%if(listing.barter) {%>
+            <p class="m-0"><%= listing.offers %></p>
+            <% }else{ %>
+            <p class="m-0"><%= listing.price %></p>
+            <% } %>
+          </div>
+          <!-- Product Description -->
+          <div class="row pt-3 pb-3 border-bottom w-100">
+            <p class="fw-semibold">Description: </p>
+            <p class="m-0"> <%= listing.Description %></p>
+          </div>
+          <!-- Contact Seller Button -->
+          <div class="row pb-1 mt-auto">
+            <% if (isAuthenticated) {%>
+              <button class="btn btn-lg" style="background-color: #FFDD70; border-color: #867029;" data-bs-toggle="modal"
+              data-bs-target="#mes-modal">Contact
+              Seller</button>
+            <% } else { %>
+              <form action="#login">
+              <button class="btn btn-lg" style="background-color: #FFDD70; border-color: #867029;">Contact
+              Seller</button>
+              </form>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- messge modal for sending a message to the seller itself -->
+  <div class="modal fade" id="mes-modal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-title">Send a Message</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="/message/create/<%= listing.Id %>" method="POST" enctype="multipart/form-data" class="modal-body">
+          <h6 class="text-end"><small>All fields are required.</small></h6>
+          <!-- Email input -->
+          <label for="modal-email" class="form-label">Your email address:</label>
+          <input type="email" class="form-control" id="modal-email" name="messageEmail" placeholder="buyer@sfsu.edu">
+          <p></p>
+          <!-- Subject input, pre-filled with the listing title -->
+          <label for="modal-subject" class="form-label">Subject:</label>
+          <input type="text" class="form-control" id="subject" name="messageSub"placeholder="Message Subject"
+          >
+          <p></p>
+          <!-- Message input -->
+          <label for="modal-Message" class="form-label">Message:</label>
+          <div class="form-floating mb-4 mt-2">
+            <textarea id="message" class="form-control" style="height: 140px;" name="messageText"></textarea>
+            <label for="message">Tell a seller briefly about your needs...</label>
+          </div>
+          <!-- Modal footer with submit button -->
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!--
+  Filename: login.html
+  Author: gurvir, chloe, bryan
+  Description: This file contains the HTML for the login modal of the SFSU Exchange website.
+               The dialog allows users to enter their email and password to log in, with validation
+               for SFSU email addresses. It also includes links for password recovery and registration.
+-->
+
+<body>
+  <!-- Login section -->
+  <section role="dialog" class="login" id="login" aria-labelledby="modal-title">
+      <!-- Modal overlay for closing the dialog -->
+      <a class="modal-overlay" href="#" tabindex="-1"></a>
+      
+      <!-- Display error message if any -->
+      <% if(messages.error){ %>
+      <%= messages.error %>
+      <% } %>
+      
+      <div class="modal-content p-5 lead">
+        <!-- Modal close button -->
+        <a title="Close modal" aria-label="Close modal" href="#" class="modal-close">&times;</a>
+        
+        <!-- Login form heading -->
+        <div class="display-6 pb-4" style="color:rgba(102, 16, 242, 1);">
+          Log in to SFSU Exchange
+        </div>
+  
+        <!-- Login form -->
+        <form id="login-form" action="/login" method="POST" enctype="multipart/form-data">
+  
+          <!-- Email input field -->
+          <label for="email" class="form-label">Email address: </label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-envelope-fill"></i>
+            </span>
+            <input type="email" class="form-control" id="email" pattern=".*@sfsu\.edu" placeholder="e.g. mario@sfsu.edu" name="email">
+          </div>
+  
+          <!-- Password input field -->
+          <label for="password1" class="form-label pt-3">Password: </label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-lock-fill"></i>
+            </span>
+            <input type="password" class="form-control" id="password1" placeholder="Enter your password" title="The email must end with @sfsu.edu." required name="password">
+          </div>
+  
+          <!-- Link for forgotten password -->
+          <a href="#" class="text-end">Forgot password?</a>
+  
+          <!-- Submit button -->
+          <div class="text-center p-3">
+            <button type="submit" class="btn btn-primary">Log in</button>
+          </div>
+  
+        </form>
+  
+        <!-- Link for registration -->
+        <div class="text-start">
+          Don't have an account?
+          <a href="/register">Register here.</a>
+        </div>
+      </div>
+  </section>
+</body>

@@ -1,0 +1,111 @@
+<!--
+  listings.ejs
+
+  This file displays a list of listings in a table format with checkboxes, titles, dates, and delete icons.
+  It includes functionality to select individual listings or all listings using checkboxes.
+
+  Features:
+  - Checkbox selection for individual listings and "select all" functionality.
+  - Each listing title is clickable, leading to detailed listing information.
+
+  Components:
+  - HTML structure with rows for each listing entry.
+  - JavaScript for checkbox interaction.
+
+-->
+<body>
+  <!-- Container for the listing entries -->
+  <div class="container-fluid">
+    <!-- Header row with checkboxes, title, date, and delete icon -->
+    <div class="row border-top border-bottom text-center py-2">
+      <!-- Checkbox to select all listings -->
+      <div class="col-1">
+        <input type="checkbox" id="select-all-listing">
+      </div>
+      <!-- Title column -->
+      <div class="col-4 fw-bold">
+        Listing Title
+      </div>
+      <!-- Date column -->
+      <div class="col-3 fw-bold">
+        Date Posted
+      </div>
+      <div class="col-3">
+      </div>
+            <!-- Delete icon column -->
+      <div class="col-1">
+        <i class="material-icons delete-icon" style="font-size: 1.25rem; 
+          vertical-align: middle; 
+          line-height: 0 !important; 
+          position: relative;
+          top: -1px;
+          font-weight: bold;">delete</i>
+      </div>
+    </div>
+    <!-- Entry row for each listing -->
+    
+    <% listings.forEach(function(listing) { %>
+    <div class="entry row border-bottom text-center py-2">
+      <!-- Checkbox for individual listing -->
+      <div class="col-1">
+        <input type="checkbox" class="entry-checkbox-listing">
+      </div>
+      <!-- Title column with link to details -->
+      <a href="/listing/<%= listing.Id %>" class="col-4 text-decoration-none text-dark">
+        <%= listing.title %>
+      </a>
+      <!-- Date column with date -->
+      <a href="/listing/<%= listing.Id %>" class="col-3 text-decoration-none text-dark">
+        <%= listing.dateCreated %>
+      </a>
+      <a href="/listing/<%= listing.Id %>" class="col-3 text-decoration-none text-dark">
+      </a>
+      
+      <!-- Delete icon column -->
+      <form action="/listing/delete/<%= listing.Id %>" method="POST" class="col-1">
+ 
+       <i  type="submit" class="material-icons delete-icon" style="font-size: 1.25rem; 
+         vertical-align: middle; 
+         line-height: 0 !important; 
+         position: relative;
+         top: -1px;">delete</i>
+ 
+     </form>
+    </div>
+  
+    <% }); %>
+
+  </div>
+
+  <!-- JavaScript for checkbox functionality -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Selecting elements
+      const selectAllCheckbox = document.getElementById('select-all-listing');
+      const entryCheckboxes = document.querySelectorAll('.entry-checkbox-listing');
+      const deleteIcons = document.querySelectorAll('.delete-icon');
+
+      // Event listener for select all checkbox
+      selectAllCheckbox.addEventListener('change', function () {
+        const isChecked = this.checked;
+        // Set all entry checkboxes to the state of the select all checkbox
+        entryCheckboxes.forEach(function (checkbox) {
+          checkbox.checked = isChecked;
+        });
+      });
+
+      // Event listener for individual entry checkboxes
+      entryCheckboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+          // Check if all entry checkboxes are checked
+          const allChecked = document.querySelectorAll('.entry-checkbox-listing:checked').length === entryCheckboxes.length;
+           // Update the select all checkbox state
+          selectAllCheckbox.checked = allChecked;
+        });
+      });
+    });
+  </script>
+
+</body>
+
+</html>

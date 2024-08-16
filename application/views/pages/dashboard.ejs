@@ -1,0 +1,98 @@
+<!--
+File: dashboard.ejs
+
+Description:
+This file represents the dashboard page for <%= name %>'s profile on the SFSU Exchange website.
+It includes tabs for navigating between messages and listings sections.
+Each tab displays corresponding content dynamically loaded via server-side includes.
+
+Dependencies:
+- Includes '../partials/head' for metadata and styles.
+- Includes '../partials/header' for the site's header navigation.
+- Includes '../partials/dashboard/messages' for displaying messages content.
+- Includes '../partials/dashboard/listings' for displaying listings content.
+
+JavaScript Functionality:
+- Provides tab navigation functionality using JavaScript to toggle between messages and listings content based on user interaction.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Include partial head content (SFSUExchange logo) -->
+  <%- include('../partials/head'); %>
+    <style>
+      /* CSS to handle the visibility of tab content */
+      .tab-content {
+        display: none; /* Hide all tab content by default */
+      }
+
+      .tab-content.selected {
+        display: block; /* Show tab content when it has the 'selected' class */
+      }
+    </style>
+</head>
+
+<body>
+  <!-- Include partial header content (navigation bar) -->
+  <header>
+    <%- include('../partials/header'); %>
+  </header>
+  
+  <!-- Main heading for the dashboard page -->
+  <div class="d-flex justify-content-center align-items-center">
+    <h1 class="display-5 mt-5 mb-3 text-center" style="color: rgba(102, 16, 242, 1)">
+      <%=name %>'s Dashboard
+    </h1>
+  </div>
+  
+  <!-- Button group for tab navigation -->
+  <div class="btn-group btn-group-lg m-2" role="group" aria-label="Dashboard Tabs">
+    <!-- Button for Messages tab -->
+    <a id="msgBtn" href="#" class="btn active" role="button" data-bs-toggle="button" aria-pressed="true">
+      <i class="material-icons pe-1"
+        style="font-size: 1.25rem; vertical-align: middle; line-height: 0 !important; position: relative; top: -1px; font-weight: bold;">mail</i>Messages</a>
+    
+    <!-- Button for Listings tab -->
+    <a id="listingsBtn" href="#" class="btn" role="button" data-bs-toggle="button"><i class="material-icons pe-1"
+        style="font-size: 1.25rem; vertical-align: middle; line-height: 0 !important; position: relative; top: -1px; font-weight: bold;">list</i>Listings</a>
+  </div>
+
+  <!-- Tab content for Messages, initially visible -->
+  <div id="tabContent1" class="tab-content selected">
+    <%- include('../partials/dashboard/messages'); %>
+  </div>
+  <!-- Tab content for Listings, initially hidden -->
+  <div id="tabContent2" class="tab-content">
+    <%- include('../partials/dashboard/listings'); %>
+  </div>
+
+  <script>
+    // event listener for messages button, displays messages when clicked
+    // by removing selected class on listings tab and applying it to messages tab
+    document.getElementById('msgBtn').addEventListener('click', function () {
+      this.classList.add('active');
+      if (this.classList.contains('active')) {
+        console.log("clicked on messages button");
+        document.getElementById('tabContent2').classList.remove('selected');
+        document.getElementById('tabContent1').classList.add('selected');
+      }
+      document.getElementById('listingsBtn').classList.remove('active');
+    });
+
+    // event listener for listings button, displays listings when clicked
+    // by removing selected class on messages tab and applying it to listings tab
+    document.getElementById('listingsBtn').addEventListener('click', function () {
+      this.classList.add('active');
+      if (this.classList.contains('active')) {
+        console.log("clicked on listings button");
+        document.getElementById('tabContent1').classList.remove('selected');
+        document.getElementById('tabContent2').classList.add('selected');
+      }
+      document.getElementById('msgBtn').classList.remove('active');
+    });
+  </script>
+</body>
+
+</html>

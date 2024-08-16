@@ -1,0 +1,11 @@
+<!-- alert.ejs -->
+<!-- 
+  this file is a component to create alerts throughout the website
+  inputs: alertType - the type of alert eg. success, danger, warning
+          alertMessage - the text contents of the alert
+-->
+<div class="alert alert-<%= alertType %> alert-dismissible fade show" role="alert">
+  <%= alertMessage %>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+

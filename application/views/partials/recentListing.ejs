@@ -1,0 +1,101 @@
+<!--
+File: recentListings.ejs
+
+Description:
+This file displays recent listings dynamically fetched from sampleObject. 
+It features a section header titled "Recent Listings" and a grid layout of thumbnails and titles for each listing.
+
+Note: This file utilizes server-side templating (e.g., <% %> tags) for dynamic content generation.
+-->
+
+<body>
+    <!-- Recent Listings -->
+    <section>
+        <div class="d-flex justify-content-center">
+            <h1 class="display-6" style="color: rgba(102, 16, 242, 1)">
+                Recent Listings
+            </h1>
+        </div>
+    </section> 
+
+    <div id="carouselExample" class="carousel carousel-dark slide  d-none d-md-flex" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <% var itemsPerSlide = 4; %>
+        <% for (var i = 0; i < recentListings.length; i += itemsPerSlide) { %>
+          <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+            <div class="cards-wrapper">
+              <% for (var j = i; j < i + itemsPerSlide && j < recentListings.length; j++) { %>
+                <div class="card">
+                  <a href="#" class="link-dark">
+                    <img class="card-img-top img-fluid" src="<%= recentListings[j].thumbnail %>" alt="Card image cap">
+                  </a>
+                  <div class="card-body">
+                    <h5 class="card-title text-center text-dark"><%= recentListings[j].title %></h5>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        <% } %>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only"></span>
+      </button>
+    </div>
+
+    <!-- Grid of recent posts -->
+    <div id="RecentPostgrid" class="container py-3 d-flex d-md-none">
+      <div class="row justify-content-center align-items-center ">
+        <!-- Loop through each listing in sampleObject and display it -->
+        <% recentListings.forEach(function(listing) { %>
+          <div class="col-xlg-3 col-lg-4  col-md-6">
+            <a href="/listing/<%= listing.ListID %>" class="listing  text-decoration-none text-center ">
+              <div>
+                <img src="<%= listing.thumbnail %>" alt="Thumbnail" class="img-fluid rounded">
+              </div>
+              <div class="text-dark pt-2">
+                <p><%= listing.title %>
+                </p>
+              </div>
+          </a>
+          </div>
+          <% }); %>
+      </div>
+    </div>
+
+
+
+    <!-- recent listing card style -->
+<style>
+  .cards-wrapper{
+      display: flex;
+      justify-content: center;
+  }
+  .card-img{
+      max-width: 20;
+      max-height: 50;
+  }
+  .card{
+      margin: 0.5em;
+      box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, .18);
+      border: none;
+      border-radius: 0;
+  }
+  .carousel-inner {
+      padding: 1em;
+  }
+  .carousel-control-prev, .carousel-control-next {
+      background-color: #e1e1e1;
+      width: 5vh;
+      height: 5vh;
+      border-radius: 50%;
+      top: 50%;
+      transform: translateY(-50%);
+  }
+</style>
+</body>
